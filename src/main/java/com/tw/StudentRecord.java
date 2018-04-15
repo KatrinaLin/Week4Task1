@@ -2,21 +2,25 @@ package com.tw;
 
 import java.util.HashMap;
 
-public class Record {
+public class StudentRecord {
 
-    private String name;
-    private int id;
+    private String studentName;
+    private String id;
     private HashMap<String, Double> scores;
 
 
-    public Record(String name, int id) {
-        this.name = name;
+    public StudentRecord(String studentName, String id) {
+        this.studentName = studentName;
         this.id = id;
         scores = new HashMap<>();
     }
 
-    public String getName() {
-        return name;
+    public String getStudentName() {
+        return studentName;
+    }
+
+    public String getId() {
+        return id;
     }
 
     public void addScore(String subject, double score) {
@@ -31,6 +35,6 @@ public class Record {
 
     @Override
     public boolean equals(Object obj) {
-        return obj instanceof Record && this.id == ((Record) obj).id;
+        return obj instanceof StudentRecord && ((StudentRecord) obj).id.equals(this.id);
     }
 }

@@ -6,14 +6,14 @@ import java.util.List;
 
 public class ReportSystem {
 
-    private HashMap<Integer, Record> records;
+    private HashMap<String, StudentRecord> records;
     private final int NUMBER_OF_SUBJECT = 4;
 
     public ReportSystem() {
-        records = new HashMap<Integer, Record>();
+        records = new HashMap<String, StudentRecord>();
     }
 
-    public Record getRecord(int studentID) {
+    public StudentRecord getSingleRecord(int studentID) {
         return records.get(studentID);
     }
 
@@ -30,13 +30,13 @@ public class ReportSystem {
         }
 
         String name = entries[0].trim();
-        int id = Integer.parseInt(entries[1].trim());
+        String id = entries[1].trim();
 
         // check if a student record with the same id already exists
-        Record cur = records.get(id);
+        StudentRecord cur = records.get(id);
 
         if (cur == null) {
-            cur = new Record(name, id); // instantiate a Record object if the student record does not exist
+            cur = new StudentRecord(name, id); // instantiate a StudentRecord object if the student record does not exist
         }
 
         for (int i = 2; i < entries.length; i++) {
@@ -56,9 +56,9 @@ public class ReportSystem {
     }
 
 
-    public List<Record> getRecords(List<Integer> studentIDs) {
+    public List<StudentRecord> getRecords(List<Integer> studentIDs) {
 
-        List<Record> result = new ArrayList<>();
+        List<StudentRecord> result = new ArrayList<>();
 
         studentIDs.stream()
                 .forEach(id -> result.add(records.get(id)));
