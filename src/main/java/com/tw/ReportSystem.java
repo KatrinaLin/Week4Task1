@@ -5,7 +5,7 @@ import java.util.*;
 public class ReportSystem {
 
     private HashMap<String, StudentRecord> records;
-    private final String[] SUBJECTS = {"数学", "语文", "英语", "编程"};
+    private List<String> SUBJECTS = Arrays.asList("数学", "语文", "英语", "编程");
 
     public ReportSystem() {
         records = new HashMap<>();
@@ -27,7 +27,7 @@ public class ReportSystem {
 
         String[] entries = input.split(", ");
 
-        if (entries.length != 2 + SUBJECTS.length) {
+        if (entries.length != 2 + SUBJECTS.size()) {
             return false;
         }
 
@@ -44,14 +44,17 @@ public class ReportSystem {
         for (int i = 2; i < entries.length; i++) {
             String[] str = entries[i].split(": ");
 
-            if (str.length != 2) {  // each pair should be "学科: 成绩"
+            if (str.length != 2 || !SUBJECTS.contains(str[0].trim())) {  // each pair should be "学科: 成绩"
                 return false;
             }
 
-            cur.addScore(str[0].trim(), Double.parseDouble(str[1].trim()));
+            try {
+                cur.addScore(str[0].trim(), Double.parseDouble(str[1].trim()));
+            } catch (NumberFormatException e) {
+                return false;
+            }
         }
 
-        System.out.println("Success!");
         records.put(id, cur);
 
         return true;
@@ -96,6 +99,7 @@ public class ReportSystem {
 
         return true;
     }
+
 
     public boolean validateIDs(String[] studentIDs) {
 

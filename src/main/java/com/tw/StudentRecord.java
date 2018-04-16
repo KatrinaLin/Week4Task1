@@ -1,6 +1,7 @@
 package com.tw;
 
 import java.util.HashMap;
+import java.util.List;
 
 public class StudentRecord {
 
@@ -35,7 +36,7 @@ public class StudentRecord {
         return obj instanceof StudentRecord && ((StudentRecord) obj).id.equals(this.id);
     }
 
-    public double listScores(String[] subjects) {
+    public double listScores(List<String> subjects) {
         System.out.print(studentName);
 
         double total = 0;
@@ -46,7 +47,7 @@ public class StudentRecord {
             total += score;
         }
 
-        System.out.printf("|%.2f", total / subjects.length);    // print student's average scores
+        System.out.printf("|%.2f", total / subjects.size());    // print student's average scores
         System.out.print("|" + total);  // print student's total scores
 
         System.out.println();
