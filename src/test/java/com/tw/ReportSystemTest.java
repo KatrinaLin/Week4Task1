@@ -36,12 +36,14 @@ public class ReportSystemTest {
 
         StudentRecord lucy = new StudentRecord("Lucy", "002");
 
-        reportSystem.addRecord("Lucy, 002, 数学: 90, 语文: 98, 英语: 90, 编程: 100");
-        reportSystem.addRecord("Alex, 003, 数学: 97, 语文: 80, 英语: 85, 编程: 99");
+        assertTrue(reportSystem.addRecord("Lucy, 002, 数学: 90, 语文: 98, 英语: 90, 编程: 100"));
+        assertTrue(reportSystem.addRecord("Alex, 003, 数学: 97, 语文: 80, 英语: 85, 编程: 99"));
+
+        // scores cannot be non-digit
+        assertFalse(reportSystem.addRecord("Alexa, 004, 数学: A, 语文: 80, 英语: 85, 编程: 99"));
 
         assertEquals(reportSystem.getRecords().get("002"), lucy);   // Student records with the same id are considered as the same
         assertFalse(reportSystem.getRecords().get("003").equals(lucy));
-
     }
 
     @Test
