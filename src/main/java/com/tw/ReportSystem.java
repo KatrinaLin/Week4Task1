@@ -1,21 +1,17 @@
 package com.tw;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.HashMap;
-import java.util.List;
+import java.util.*;
 
 public class ReportSystem {
 
     private HashMap<String, StudentRecord> records;
-    private String[] subjects = {"数学", "语文", "英语", "编程"};
+    private final String[] SUBJECTS = {"数学", "语文", "英语", "编程"};
 
     public ReportSystem() {
-        records = new HashMap<String, StudentRecord>();
-
+        records = new HashMap<>();
     }
 
-    public StudentRecord getSingleRecord(int studentID) {
+    public StudentRecord getSingleRecord(String studentID) {
         return records.get(studentID);
     }
 
@@ -27,7 +23,7 @@ public class ReportSystem {
 
         String[] entries = input.split(", ");
 
-        if (entries.length != 2 + subjects.length) {
+        if (entries.length != 2 + SUBJECTS.length) {
             return false;
         }
 
@@ -57,58 +53,69 @@ public class ReportSystem {
         return true;
     }
 
+    /*
+        Assume that the system only accept input that strictly follows the format:
+        "学号, 学号, ..."
+        And the studentID only contains digit.
+     */
     public boolean printRecords(String input) {
 
-        List<String> studentIDs = Arrays.asList(input.split(", "));
+        String[] studentIDs = input.split(", ");
+
+        if (!validateIDs(studentIDs)) {
+            return false;
+        }
+
+        System.out.println("成绩单\n姓名|数学|语文|英语|编程|平均分|总分\n========================");
 
         List<Double> results = new ArrayList<>();
 
-        System.out.println("成绩单\n 姓名|数学|语文|英语|编程|平均分|总分\n========================");
+        double classTotal = 0;
 
-        studentIDs.stream()
-                .forEach(id -> {
-                    // 如果我们输入的学号不存在，该学号在计算时就会被忽略。
-                    if (records.get(id) != null)
-                        results.add(printScores(records.get(id)));
-                });
+        for(String id : studentIDs) {
+            StudentRecord cur = records.get(id);
+
+            if (cur == null) continue;  // 如果我们输入的学号不存在，该学号在计算时就会被忽略。
+
+            double studentTotal = cur.listScores(SUBJECTS);
+            classTotal += studentTotal;
+            results.add(studentTotal);
+        }
+
+        if (results.size() == 0) {
+            return true;    // 没有符合的记录，不打印即返回
+        }
 
         System.out.println("========================");
 
-        System.out.println("全班总分平均数：" + results.stream().mapToDouble(x -> x).average().getAsDouble());
+        System.out.printf("全班总分平均数：%.2f\n全班总分中位数：%.2f\n\n", classTotal / results.size(), getMedian(results));
 
-        int size = results.size();
-        double median;
-
-
-        System.out.println("全班总分中位数：" + results.stream().mapToDouble(x -> x).skip(results.size()));
-
-        // not sure what kind of input is invalid
         return true;
     }
 
-    public double printScores(StudentRecord studentRecord) {
-        HashMap<String, Double> scoreRecord = studentRecord.getScoreRecord();
+    public boolean validateIDs(String[] studentIDs) {
 
-        System.out.println(studentRecord.getStudentName());
-
-        double total = 0;
-
-        for (String s : subjects) {
-            double score = scoreRecord.get(s);
-            printItem(score);
-            total += score;
+        for (String id: studentIDs) {
+            if (!id.matches("\\d+"))
+                return false;
         }
-
-        printItem(total / subjects.length);
-        printItem(total);
-
-        System.out.println();
-
-        return total;
+        return true;
     }
 
-    public void printItem(double score) {
-        System.out.print("|" + score);
+    public double getMedian(List<Double> numbers) {
+        Collections.sort(numbers);
+
+        int size = numbers.size();
+
+        double median;
+
+        if (size % 2 == 0) {
+            median = (numbers.get(size / 2 - 1) + numbers.get(size / 2)) / 2;
+        } else {
+            median = numbers.get(size / 2);
+        }
+
+        return median;
     }
 
 }
