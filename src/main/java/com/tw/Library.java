@@ -39,6 +39,12 @@ public class Library {
             } else if (option == 2) {
                 System.out.println("请输入要打印的学生的学号（格式： 学号, 学号,...），按回车提交：");
 
+                String input2 = sc.nextLine();
+
+                while (!reportSystem.printRecords(input2.trim())) {
+                    System.out.println("请按正确的格式输入要打印的学生的学号（格式： 学号, 学号,...），按回车提交：");
+                    input2 = sc.nextLine();
+                }
 
             } else if (option == 3) {
                 break;

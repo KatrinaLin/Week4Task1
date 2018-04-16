@@ -1,16 +1,18 @@
 package com.tw;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 
 public class ReportSystem {
 
     private HashMap<String, StudentRecord> records;
-    private final int NUMBER_OF_SUBJECT = 4;
+    private String[] subjects = {"数学", "语文", "英语", "编程"};
 
     public ReportSystem() {
         records = new HashMap<String, StudentRecord>();
+
     }
 
     public StudentRecord getSingleRecord(int studentID) {
@@ -25,7 +27,7 @@ public class ReportSystem {
 
         String[] entries = input.split(", ");
 
-        if (entries.length != 2 + NUMBER_OF_SUBJECT) {
+        if (entries.length != 2 + subjects.length) {
             return false;
         }
 
@@ -55,16 +57,58 @@ public class ReportSystem {
         return true;
     }
 
+    public boolean printRecords(String input) {
 
-    public List<StudentRecord> getRecords(List<Integer> studentIDs) {
+        List<String> studentIDs = Arrays.asList(input.split(", "));
 
-        List<StudentRecord> result = new ArrayList<>();
+        List<Double> results = new ArrayList<>();
+
+        System.out.println("成绩单\n 姓名|数学|语文|英语|编程|平均分|总分\n========================");
 
         studentIDs.stream()
-                .forEach(id -> result.add(records.get(id)));
+                .forEach(id -> {
+                    // 如果我们输入的学号不存在，该学号在计算时就会被忽略。
+                    if (records.get(id) != null)
+                        results.add(printScores(records.get(id)));
+                });
 
-        return result;
+        System.out.println("========================");
+
+        System.out.println("全班总分平均数：" + results.stream().mapToDouble(x -> x).average().getAsDouble());
+
+        int size = results.size();
+        double median;
+
+
+        System.out.println("全班总分中位数：" + results.stream().mapToDouble(x -> x).skip(results.size()));
+
+        // not sure what kind of input is invalid
+        return true;
     }
 
+    public double printScores(StudentRecord studentRecord) {
+        HashMap<String, Double> scoreRecord = studentRecord.getScoreRecord();
+
+        System.out.println(studentRecord.getStudentName());
+
+        double total = 0;
+
+        for (String s : subjects) {
+            double score = scoreRecord.get(s);
+            printItem(score);
+            total += score;
+        }
+
+        printItem(total / subjects.length);
+        printItem(total);
+
+        System.out.println();
+
+        return total;
+    }
+
+    public void printItem(double score) {
+        System.out.print("|" + score);
+    }
 
 }

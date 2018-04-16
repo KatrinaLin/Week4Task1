@@ -6,13 +6,13 @@ public class StudentRecord {
 
     private String studentName;
     private String id;
-    private HashMap<String, Double> scores;
+    private HashMap<String, Double> scoreRecord; // the key is id, not studentName
 
 
     public StudentRecord(String studentName, String id) {
         this.studentName = studentName;
         this.id = id;
-        scores = new HashMap<>();
+        scoreRecord = new HashMap<>();
     }
 
     public String getStudentName() {
@@ -25,12 +25,12 @@ public class StudentRecord {
 
     public void addScore(String subject, double score) {
 
-        scores.put(subject, score);
+        scoreRecord.put(subject, score);
 
     }
 
-    public HashMap<String, Double> getScores() {
-        return scores;
+    public HashMap<String, Double> getScoreRecord() {
+        return scoreRecord;
     }
 
     @Override
