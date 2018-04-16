@@ -15,10 +15,14 @@ public class ReportSystem {
         return records.get(studentID);
     }
 
+    public HashMap<String, StudentRecord> getRecords() {
+        return records;
+    }
+
     /*
-        Assume that the system only accept input that strictly follows the format:
-        "姓名, 学号, 数学: 成绩, 语文: 成绩, 英语: 成绩, 编程: 成绩"
-     */
+       Assume that the system only accept input that strictly follows the format:
+       "姓名, 学号, 数学: 成绩, 语文: 成绩, 英语: 成绩, 编程: 成绩"
+    */
     public boolean addRecord(String input) {
 
         String[] entries = input.split(", ");

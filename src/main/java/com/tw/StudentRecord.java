@@ -8,7 +8,6 @@ public class StudentRecord {
     private String id;
     private HashMap<String, Double> scoreRecord; // the key is id, not studentName
 
-
     public StudentRecord(String studentName, String id) {
         this.studentName = studentName;
         this.id = id;
